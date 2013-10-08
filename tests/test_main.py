@@ -80,11 +80,15 @@ class MainTests(TestCase):
                          'tests.settings.inheritance')
         self.assertEqual(importer.name, 'Inheritance')
 
-    @patch.object(sys, 'argv', ['manage.py', 'test',
-                  '--settings=tests.settings.main', '--configuration=Test'])
+    @patch.dict(os.environ, clear=True)
+    @patch.object(sys, 'argv', ['manage.py', 'diffsettings',
+                                '--settings=tests.settings.main',
+                                '--configuration=TestAlternative'])
     def test_configuration_option(self):
+        self.assertIsNone(os.environ.get('DJANGO_SETTINGS_MODULE'))
+        self.assertIsNone(os.environ.get('DJANGO_CONFIGURATION'))
         importer = ConfigurationImporter(check_options=True)
         self.assertEqual(importer.module, 'tests.settings.main')
-        self.assertEqual(importer.name, 'Test')
+        self.assertEqual(importer.name, 'TestAlternative')
         self.assertEqual(repr(importer),
-                         "<ConfigurationImporter for 'tests.settings.main.Test'>")
+                         "<ConfigurationImporter for 'tests.settings.main.TestAlternative'>")

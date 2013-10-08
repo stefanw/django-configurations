@@ -64,3 +64,7 @@ class Test(Configuration):
     @classmethod
     def post_setup(cls):
         cls.POST_SETUP_TEST_SETTING = 7
+
+
+class TestAlternative(Test):
+    pass
